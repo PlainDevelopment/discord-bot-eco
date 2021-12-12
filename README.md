@@ -49,15 +49,6 @@ client.on('ready', async() => {
 });
 ```
 
-## Built In Formatting
-You can turn the users money from 125000 to $125,000, it all depends on your currency set in the config!
-```js
-economy.format(money);
-
-economy.format(125000);
-```
-
-
 ## Wallet & Bank Functions
 |*Function* |Wallet|Bank|
 |-------------|---------------|------------------|
@@ -89,6 +80,8 @@ economy.format(125000);
 |weekly|`economy.weekly(userID, amount)`|
 |monthly|`economy.monthly(userID, amount)`|
 |yearly|`economy.yearly(userID, amount)`|
+|format|`economy.format(amount)`|
+
 
 ## Handling
 All error handling is built into the package! User tries buying a package and it's not real? It'll return an error!
@@ -172,3 +165,10 @@ await economy.take(userID, amount);
 await economy.get(userID, type);
 ```
 - If type is not provided, both balances will be returned.
+
+### GetBankLimit
+```js
+await economy.getBankLimit(userID);
+```
+- **false:** Bank limit is not enabled
+- The limit will be returned upon success.
