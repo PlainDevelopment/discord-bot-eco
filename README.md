@@ -15,8 +15,8 @@ discord-bot-eco supports activities such as buy, daily, deposit, get, getItems, 
 To start using **discord-bot-eco**, you will first need to initialise the configuration as shown below.
 ```js
 client.on('ready', async() => {
-    await economy.init({
-        mongodbUrl: "(Insert URL Here)",
+    economy.setURL("(MongoDB-URL)");
+    await economy.setConfig({
         currency: "$",
         allowBankruptcy: false,
         limits: {
