@@ -81,6 +81,9 @@ client.on('ready', async() => {
 |monthly|`economy.monthly(userID, amount)`|
 |yearly|`economy.yearly(userID, amount)`|
 |format|`economy.format(amount)`|
+|getTimeout|`economy.getTimeout(userID, timeout)`|
+|getBankLimit|`economy.getBankLimit(userID)`|
+
 
 
 ## Handling
@@ -172,3 +175,11 @@ await economy.getBankLimit(userID);
 ```
 - **false:** Bank limit is not enabled
 - The limit will be returned upon success.
+
+### GetTimeout
+```js
+await economy.getTimeout(userID, timeout);
+```
+- Timeout can be: **daily**, **weekly**, **monthly** or **yearly**.
+- Returns the *UNIX-STRING* of when the reward was *last claimed*. 
+
