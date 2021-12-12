@@ -58,6 +58,7 @@ exports.buy = async(userID, iName) => await require('./functions/buy').run(userI
 exports.getItems = async(userID) => await require('./functions/getItems').run(userID, this);
 exports.leaderboard = async(type) => await require('./functions/leaderboard').run(type, this);
 exports.sell = async(userID, iName) => await require('./functions/sell').run(userID, iName, this);
+exports.format = async(money) => await require('./functions/format').run(money, this);
 
 exports.shop = async() => {
     if(!this.config.shopEnabled) return false;

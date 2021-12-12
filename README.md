@@ -17,6 +17,7 @@ To start using **discord-bot-eco**, you will first need to initialise the config
 client.on('ready', async() => {
     await economy.init({
         mongodbUrl: "(Insert URL Here)",
+        currency: "$",
         allowBankruptcy: false,
         limits: {
             defaultBankLimit: 3000,
@@ -47,9 +48,19 @@ client.on('ready', async() => {
     });
 });
 ```
+
+## Built In Formatting
+You can turn the users money from 125000 to $125,000, it all depends on your currency set in the config!
+```js
+economy.format(money);
+
+economy.format(125000);
+```
+
+
 ## Wallet & Bank Functions
 |*Function* |Wallet|Bank|
-|-------------|---------------|-------------|
+|-------------|---------------|------------------|
 |give|`economy.give(userID, amount, "wallet")`|`economy.give(userID, amount, "bank")`|
 |take|`economy.take(userID, amount, "wallet")`|`economy.take(userID, amount, "bank")`|
 |set|`economy.set(userID, amount, "wallet")`|`economy.set(userID, amount, "bank")`|
@@ -59,7 +70,7 @@ client.on('ready', async() => {
 
 ## Shop Functions
 |*Function* |Usage|
-|-------------|---------------|
+|-------------|-----------------|
 |shop|`economy.shop()`|
 |buy|`economy.buy(userID, itemName)`|
 |sell|`economy.sell(userID, itemName)`|
