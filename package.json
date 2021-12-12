@@ -1,0 +1,38 @@
+{
+    "name": "discord-bot-eco",
+    "version": "1.1.0",
+    "description": "Very customizable economy framework for your Discord Bot",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PlainDevelopment/discord-bot-eco.git"
+    },
+    "keywords": [
+        "discord",
+        "economy",
+        "discord-eco",
+        "discord-economy",
+        "bot",
+        "mongo",
+        "mongoose",
+        "discordjs",
+        "discord.js",
+        "djs",
+        "shop",
+        "work",
+        "rob",
+        "leaderboard"
+    ],
+    "author": "PlainDevelopment",
+    "license": "MIT",
+    "dependencies": {
+        "mongoose": "^6.1.1"
+    },
+    "bugs": {
+        "url": "https://github.com/PlainDevelopment/discord-bot-eco/issues"
+      },
+    "homepage": "https://github.com/PlainDevelopment/discord-bot-eco#readme"
+}
