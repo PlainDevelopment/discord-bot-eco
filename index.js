@@ -61,6 +61,7 @@ exports.sell = async(userID, iName) => await require('./functions/sell').run(use
 exports.format = async(money) => await require('./functions/format').run(money, this);
 exports.getBankLimit = async(userID) => await require('./functions/getBankLimit').run(userID, this);
 exports.getTimeout = async(userID, timeout) => await require('./functions/getBankLimit').run(userID, timeout, this);
+exports.getRandom = async(from, to) => await require('./functions/getRandom').run(from, to, this);
 
 exports.shop = async() => {
     if(!this.config.shopEnabled) return false;

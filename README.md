@@ -83,8 +83,7 @@ client.on('ready', async() => {
 |format|`economy.format(amount)`|
 |getTimeout|`economy.getTimeout(userID, timeout)`|
 |getBankLimit|`economy.getBankLimit(userID)`|
-
-
+|getRandom|`economy.getRandom(from, to)`|
 
 ## Handling
 All error handling is built into the package! User tries buying a package and it's not real? It'll return an error!
