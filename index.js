@@ -283,7 +283,7 @@ class Economy {
     static async leaderboard(type) {
 
         if (!type) {
-            const d2 = await require('../db.js').find({});
+            const d2 = await require('./db.js').find({});
 
             d2.sort(function (a, b) {
                 return a.balance.wallet - b.balance.wallet;
@@ -292,7 +292,7 @@ class Economy {
             return d2;
         }
         if (type === "wallet") {
-            const d2 = await require('../db.js').find({});
+            const d2 = await require('./db.js').find({});
 
             d2.sort(function (a, b) {
                 return a.balance.wallet - b.balance.wallet;
@@ -301,7 +301,7 @@ class Economy {
             return d2;
         }
         if (type === "bank") {
-            const d2 = await require('../db.js').find({});
+            const d2 = await require('./db.js').find({});
 
             d2.sort(function (a, b) {
                 return a.balance.bank - b.balance.bank;
@@ -310,7 +310,7 @@ class Economy {
             return d2;
         }
         if (type === "both") {
-            const d2 = await require('../db.js').find({});
+            const d2 = await require('./db.js').find({});
 
             d2.sort(function (a, b) {
                 return (a.balance.bank + a.balance.wallet) - (b.balance.bank + b.balance.bank);
