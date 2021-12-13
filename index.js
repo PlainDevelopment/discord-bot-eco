@@ -385,7 +385,7 @@ class Economy {
      */
     static async rob(userID, robUserID, minEarn, maxEarn, failChance) {
 
-        if (!userID || !maxEarn) throw new Error("Missing variables.");
+        if (!userID || !robUserID || !maxEarn || !failChance) throw new Error("Missing variables.");
         if (!minEarn) minEarn = 0;
         const data = await Economy.getUser(userID);
         const data2 = await Economy.getUser(robUserID);
@@ -396,7 +396,7 @@ class Economy {
         let amount = Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
         if (amount < 0 || amount === 0) Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
         if(amount < 0 || amount === 0) return false;
-        if (data2.balance.wallet - amount < amount - (amount * .5)) return false; // Let them keep 5%
+        if (data2.balance.wallet - amount < amount - (amount * .4) && (amount / 2) > data2.balance.wallet) return false; // Let them keep 4%
         data.balance.wallet = data.balance.wallet + amount;
         data2.balance.wallet = data2.balance.wallet - amount;
 
