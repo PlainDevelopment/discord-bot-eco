@@ -394,10 +394,11 @@ class Economy {
         if (failed8) return false;
 
         let amount = Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
-        if (amount < 0 || amount === 0) return false;
-        if (data2.balance.wallet - amount < amount - (amount * .15)) return false; // Let them keep 15%
+        if (amount < 0 || amount === 0) Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
+        if(amount < 0 || amount === 0) return false;
+        if (data2.balance.wallet - amount < amount - (amount * .5)) return false; // Let them keep 5%
         data.balance.wallet = data.balance.wallet + amount;
-        data2.balance.wallet = data.balance.wallet - amount;
+        data2.balance.wallet = data2.balance.wallet - amount;
 
         let failed9 = 0;
         try {
