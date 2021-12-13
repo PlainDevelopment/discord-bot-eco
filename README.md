@@ -14,6 +14,7 @@ discord-bot-eco supports activities such as buy, daily, deposit, get, getItems, 
 ## Introduction
 To start using **discord-bot-eco**, you will first need to initialise the configuration as shown below.
 ```js
+const economy = require('discord-bot-eco')
 client.on('ready', async() => {
     economy.setURL("(MongoDB-URL)");
     await economy.setConfig({
@@ -83,6 +84,7 @@ client.on('ready', async() => {
 |getTimeout|`economy.getTimeout(userID, timeout)`|
 |getBankLimit|`economy.getBankLimit(userID)`|
 |getRandom|`economy.getRandom(from, to)`|
+|getStreak|`economy.getStreak(userID, type)`|
 
 ## Handling
 All error handling is built into the package! User tries buying a package and it's not real? It'll return an error!
@@ -148,15 +150,17 @@ await economy.rob(userID, robUserID, minEarn, maxEarn, failChance);
 
 ### Give
 ```js
-await economy.give(userID, amount);
+await economy.give(userID, amount, type);
 ```
+- Type can be: **wallet**, **bank** or **both**.
 - **bank_limit:** The users bank limit will be exceeded if money is given.
 - The balance will be returned upon success.
 
 ### Take
 ```js
-await economy.take(userID, amount);
+await economy.take(userID, amount, type);
 ```
+- Type can be: **wallet**, **bank** or **both**.
 - **false:** The user will go bankrupt if money is taken.
 - The balance will be returned upon success.
 
