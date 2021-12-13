@@ -17,7 +17,7 @@ class Economy {
             // If there are no settings stored for this guild, we create them and try to retrive them again.
             const newSettings = new ecoSchema({
                 userID,
-                bankLimit: this.config.limits.defaultBankLimit || 3000
+                bankLimit: config.limits.defaultBankLimit || 3000
             });
             await newSettings.save().catch(() => {});
             var storedSettings = await ecoSchema.findOne({
@@ -54,7 +54,7 @@ class Economy {
      * @param {string} [iName] - Item Name
      */
     static async buy(userID, iName) {
-        
+
         if (!userID || !iName) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -86,11 +86,15 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async daily(userID, amount) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.dailyTimeout + 86400000)) return false // If it has been less than 24 hours, return.
+        if (Date.now() < (data.dailyTimeout + 86400000)) return false; // If it has been less than 24 hours, return.
+        
+        
+        if (Date.now() > (data.dailyTimeout + (86400000 * 2))) data.dailyStreak = 0
+        else data.dailyStreak = data.dailyStreak + 1
 
         data.dailyTimeout = Date.now();
         data.balance.wallet = data.balance.wallet + amount;
@@ -102,7 +106,11 @@ class Economy {
             failed2++;
         }
         if (failed2 !== 0) return false;
-        else return data.balance;
+        else return {
+            wallet: data.balance.wallet,
+            bank: data.balance.bank,
+            streak: data.dailyStreak
+        };
     }
 
     /**
@@ -110,7 +118,7 @@ class Economy {
      * @param {number} [amount] - Item Name
      */
     static async deposit(userID, amount) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
@@ -136,7 +144,7 @@ class Economy {
             style: 'currency',
             currency: 'USD'
         });
-        
+
         if (!money && money !== 0) throw new Error("Missing variables.");
         const convert = formatter.format(money);
         return (convert.replace('$', config.currency).replace('.00', ''));
@@ -147,7 +155,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async get(userID, type) {
-        
+
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!type) return data.balance;
@@ -160,7 +168,7 @@ class Economy {
      * @param {string} [userID] - Discord User ID
      */
     static async getBankLimit(userID) {
-        
+
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!config.limits.enabled) return false;
@@ -172,7 +180,7 @@ class Economy {
      * @param {string} [userID] - Discord User ID
      */
     static async getItems(userID) {
-        
+
         if (!userID) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -185,7 +193,7 @@ class Economy {
      * @param {number} [to] - Max
      */
     static async getRandom(from, to) {
-        
+
         if (!from || !to) throw new Error("Missing variables.");
 
         return Math.floor(Math.random() * (to - from + 1) + from)
@@ -193,10 +201,10 @@ class Economy {
 
     /**
      * @param {string} [userID] - Discord User ID
-     * @param {string} [timeout] - Daily, Weekly, Monthly, Yearly
+     * @param {string} [timeout] - Daily, Weekly, Monthly
      */
-    static async getTimeout(userID, type) {
-        
+    static async getTimeout(userID, timeout) {
+
         if (!userID || !timeout) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -204,7 +212,6 @@ class Economy {
         if (timeout === "daily") return data.dailyTimeout;
         if (timeout === "weekly") return data.weeklyTimeout;
         if (timeout === "monthly") return data.monthlyTimeout;
-        if (timeout === "yearly") return data.yearlyTimeout;
     }
 
     /**
@@ -213,7 +220,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async give(userID, amount, type) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!type) data.balance.wallet = data.balance.wallet + amount;
@@ -237,7 +244,7 @@ class Economy {
      * @param {string} [iName] - Item Name to give
      */
     static async giveItem(userID, iName) {
-        
+
         if (!userID || !iName) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -274,7 +281,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank, Both
      */
     static async leaderboard(type) {
-        
+
         if (!type) {
             const d2 = await require('../db.js').find({});
 
@@ -319,11 +326,14 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async monthly(userID, amount) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
         if (Date.now() < (data.monthlyTimeout + 2592000000)) return false // If it has been less than 24 hours, return.
+
+        if (Date.now() > (data.monthlyTimeout + (2592000000 * 2))) data.monthlyStreak = 0
+        else data.monthlyStreak = data.monthlyStreak + 1
 
         data.monthlyTimeout = Date.now();
         data.balance.wallet = data.balance.wallet + amount;
@@ -335,7 +345,11 @@ class Economy {
             failed6++;
         }
         if (failed6 !== 0) return false;
-        else return data.balance;
+        else return {
+            wallet: data.balance.wallet,
+            bank: data.balance.bank,
+            streak: data.monthlyStreak
+        };
     }
 
     /**
@@ -343,7 +357,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async reset(userID, type) {
-        
+
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!type) {
@@ -370,7 +384,7 @@ class Economy {
      * @param {number} [failChance] - Fail chance out of 100
      */
     static async rob(userID, robUserID, minEarn, maxEarn, failChance) {
-        
+
         if (!userID || !maxEarn) throw new Error("Missing variables.");
         if (!minEarn) minEarn = 0;
         const data = await Economy.getUser(userID);
@@ -404,7 +418,7 @@ class Economy {
      * @param {string} [iName] - Item Name
      */
     static async sell(userID, iName) {
-        
+
         if (!userID || !iName) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -436,7 +450,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async set(userID, amount, type) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!type) data.balance.wallet = amount;
@@ -459,7 +473,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async take(userID, amount, type) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
         if (!type) {
@@ -488,7 +502,7 @@ class Economy {
      * @param {string} [iName] - Item Name to take
      */
     static async takeItem(userID, iName) {
-        
+
         if (!userID || !iName) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -520,11 +534,14 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async weekly(userID, amount) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
         if (Date.now() < (data.weeklyTimeout + (604800000))) return false // If it has been less than 24 hours, return.
+        
+        if (Date.now() > (data.weeklyTimeout + (604800000 * 2))) data.weeklyStreak = 0
+        else data.weeklyStreak = data.weeklyStreak + 1
 
         data.weeklyTimeout = Date.now();
         data.balance.wallet = data.balance.wallet + amount;
@@ -536,7 +553,11 @@ class Economy {
             failed14++;
         }
         if (failed14 !== 0) return false;
-        else return data.balance;
+        else return {
+            wallet: data.balance.wallet,
+            bank: data.balance.bank,
+            streak: data.weeklyStreak
+        };//?
     }
 
     /**
@@ -544,7 +565,7 @@ class Economy {
      * @param {number} [amount] - Item Name
      */
     static async withdraw(userID, amount) {
-        
+
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
@@ -568,7 +589,7 @@ class Economy {
      * @param {number} [failChance] - Chance they get nothing
      */
     static async work(userID, minEarn, maxEarn, failChance) {
-        
+
         if (!userID || !maxEarn) throw new Error("Missing variables.");
         if (!minEarn) minEarn = 0;
         const data = await Economy.getUser(userID);
@@ -594,27 +615,38 @@ class Economy {
 
     /**
      * @param {string} [userID] - Discord User ID
-     * @param {number} [amount] - Amount of money to give
+     * @param {string} [streak] - Daily, Weekly, Monthly
      */
-    static async yearly(userID, amount) {
-        
-        if (!userID || !amount) throw new Error("Missing variables.");
+
+    static async getStreak(userID, streak) {
+
+        if (!userID || !streak) throw new Error("Missing variables.");
+
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.yearlyTimeout + 31536000000)) return false // If it has been less than 24 hours, return.
-
-        data.yearlyTimeout = Date.now();
-        data.balance.wallet = data.balance.wallet + amount;
-
-        let failed18 = 0;
-        try {
-            await data.save();
-        } catch (e) {
-            failed18++;
+        if (streak === "daily") {
+            if (Date.now() > (data.dailyTimeout + (86400000 * 2))) {
+                data.dailyStreak = 0
+                await data.save();
+            }
+            return data.dailyStreak  
         }
-        if (failed18 !== 0) return false;
-        else return data.balance;
+        if (streak === "weekly") {
+            if(Date.now() > (data.weeklyTimeout + (604800000 * 2))) {
+                data.weeklyStreak = 0;
+                await data.save();
+            }
+            return data.weeklyStreak;
+        }
+        if (streak === "monthly") {
+            if(Date.now() > (data.monthlyTimeout + (2592000000 * 2))) {
+                data.monthlyStreak = 0;
+                await data.save();
+            }
+            return data.monthlyStreak;
+        }
     }
+
 }
 
 module.exports = Economy;

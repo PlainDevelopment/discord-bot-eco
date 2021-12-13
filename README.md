@@ -9,7 +9,7 @@ Economics is divided into wallet and bank balance, so you have more room to act!
 Join our [Discord Server](https://discord.gg/EdJFwNvNS9).
 
 ## Simple Economy System
-discord-bot-eco supports activities such as buy, daily, deposit, get, getItems, giveItem, leaderboard, monthly, reset, rob, sell, take, takeItem, weekly, withdraw, work and yearly!
+discord-bot-eco supports activities such as buy, daily, deposit, get, getItems, giveItem, leaderboard, monthly, reset, rob, sell, take, takeItem, weekly, withdraw, and work!
 
 ## Introduction
 To start using **discord-bot-eco**, you will first need to initialise the configuration as shown below.
@@ -79,7 +79,6 @@ client.on('ready', async() => {
 |daily|`economy.daily(userID, amount)`|
 |weekly|`economy.weekly(userID, amount)`|
 |monthly|`economy.monthly(userID, amount)`|
-|yearly|`economy.yearly(userID, amount)`|
 |format|`economy.format(amount)`|
 |getTimeout|`economy.getTimeout(userID, timeout)`|
 |getBankLimit|`economy.getBankLimit(userID)`|
@@ -107,15 +106,14 @@ await economy.sell(userID, itemName);
 - **not_owned:** The user does not own the item.
 - The balance will be returned upon success.
 
-### Daily, Weekly, Monthly and Yearly
+### Daily, Weekly and Monthly
 ```js
 await economy.daily(userID, amount);
 await economy.weekly(userID, amount);
 await economy.monthly(userID, amount);
-await economy.yearly(userID, amount);
 ```
 - **false:** The timeout has not yet expired.
-- The balance will be returned upon success.
+- The balance and the users streak will be returned upon success.
 
 ### Deposit
 ```js
@@ -179,6 +177,13 @@ await economy.getBankLimit(userID);
 ```js
 await economy.getTimeout(userID, timeout);
 ```
-- Timeout can be: **daily**, **weekly**, **monthly** or **yearly**.
+- Timeout can be: **daily**, **weekly** or **monthly**.
 - Returns the *UNIX-STRING* of when the reward was *last claimed*. 
+
+### GetStreak
+```js
+await economy.getStreak(userID, type);
+```
+- Type can be: **daily**, **weekly** or **monthly**.
+- Returns the streak for the type.
 
