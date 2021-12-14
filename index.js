@@ -610,7 +610,7 @@ class Economy {
         if (failed17 !== 0) return false;
         else return {
             earned: amount,
-            balence: data.balance
+            balance: data.balance
         };
     }
 
