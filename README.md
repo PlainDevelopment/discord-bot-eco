@@ -17,7 +17,7 @@ To start using **discord-bot-eco**, you will first need to initialise the config
 const economy = require('discord-bot-eco')
 client.on('ready', async() => {
     economy.setURL("(MongoDB-URL)");
-    await economy.setConfig({
+    economy.setConfig({
         currency: "$",
         allowBankruptcy: false,
         limits: {

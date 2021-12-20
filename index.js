@@ -285,32 +285,32 @@ class Economy {
         if (!type || type === "both") {
             const d2 = await require('./db.js').find({});
             if(!d2) return;
-            d2.sort(function (a, b) {
-                if(a.balance.bank + a.balance.wallet === 0 || b.balance.bank + b.balance.wallet=== 0) return;
-                return (a.balance.bank + a.balance.wallet) - (b.balance.bank + b.balance.wallet);
+            d2.sort((a, b) => {
+                return parseFloat(b.balance.bank + b.balance.wallet) - parseFloat(a.balance.bank + a.balance.wallet)
             });
-            if (!d2[0]) return false;
+            
+            if (!d2[0] || (d2[0].balance.bank + d2[0].balance.wallet) === 0) return false;
 
             return d2;
         }
         if (type === "wallet") {
             const d2 = await require('./db.js').find({});
             if(!d2) return;
-            d2.sort(function (a, b) {
-                if(a.balance.wallet === 0 || b.balance.wallet=== 0) return;
-                return a.balance.wallet - b.balance.wallet;
+            d2.sort((a, b) => {
+                return parseFloat(b.balance.wallet) - parseFloat(a.balance.wallet)
             });
-            if (!d2[0]) return false;
+            
+            if (!d2[0] || d2[0].balance.wallet === 0) return false;
             return d2;
         }
         if (type === "bank") {
             const d2 = await require('./db.js').find({});
             if(!d2) return;
-            d2.sort(function (a, b) {
-                if(a.balance.bank === 0 || b.balance.bank=== 0) return;
-                return a.balance.bank - b.balance.bank;
+            d2.sort((a, b) => {
+                return parseFloat(b.balance.bank) - parseFloat(a.balance.bank)
             });
-            if (!d2[0]) return false;
+            
+            if (!d2[0] || d2[0].balance.bank === 0) return false;
             return d2;
         }
     }
