@@ -191,7 +191,7 @@ await economy.setBankLimit(userID, amount);
 await economy.getTimeout(userID, timeout);
 ```
 - Timeout can be: **daily**, **weekly** or **monthly**.
-- Returns the *UNIX-STRING* of when the reward was *last claimed*. 
+- Returns the *milliseconds* since when the reward was *last claimed*. 
 
 ### GetStreak
 ```js

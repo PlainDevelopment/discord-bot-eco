@@ -87,7 +87,7 @@ class Economy {
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.dailyTimeout + 86400000)) return timeoutMsg('daily', data); // If it has been less than 24 hours, return.
+        if (Date.now() < (data.dailyTimeout + 86400000)) return false; // If it has been less than 24 hours, return.
         
         
         if (Date.now() > (data.dailyTimeout + (86400000 * 2))) data.dailyStreak = 0
@@ -246,9 +246,9 @@ class Economy {
 
         const data = await Economy.getUser(userID);
 
-        if (timeout === "daily") return data.dailyTimeout;
-        if (timeout === "weekly") return data.weeklyTimeout;
-        if (timeout === "monthly") return data.monthlyTimeout;
+        if (timeout === "daily") return timeoutMsg('daily', data);
+        if (timeout === "weekly") return timeoutMsg('weekly', data);
+        if (timeout === "monthly") return timeoutMsg('monthly', data);
     }
 
     /**
@@ -365,7 +365,7 @@ class Economy {
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.monthlyTimeout + 2592000000)) return timeoutMsg('monthly', data); // If it has been less than 24 hours, return.
+        if (Date.now() < (data.monthlyTimeout + 2592000000)) false; // If it has been less than 24 hours, return.
 
         if (Date.now() > (data.monthlyTimeout + (2592000000 * 2))) data.monthlyStreak = 0
         else data.monthlyStreak = data.monthlyStreak + 1
@@ -581,7 +581,7 @@ class Economy {
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.weeklyTimeout + (604800000))) return timeoutMsg('weekly', data); // If it has been less than 24 hours, return.
+        if (Date.now() < (data.weeklyTimeout + (604800000))) return false; // If it has been less than 24 hours, return.
         
         if (Date.now() > (data.weeklyTimeout + (604800000 * 2))) data.weeklyStreak = 0
         else data.weeklyStreak = data.weeklyStreak + 1
