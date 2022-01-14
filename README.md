@@ -63,7 +63,8 @@ client.on('ready', async() => {
 ## Shop Functions
 |*Function* |Usage|
 |-------------|-----------------|
-|shop|`economy.shop()`|
+|getShop|`economy.getShop(optionalGuildID)`|
+|setShop|`economy.setShop(guildID, newShop)`|
 |buy|`economy.buy(userID, itemName)`|
 |sell|`economy.sell(userID, itemName)`|
 |giveItem|`economy.giveItem(userID, itemName)`|

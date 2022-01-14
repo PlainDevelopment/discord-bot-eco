@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const ecoSchema = require('./db');
+const shopSchema = require('./shop');
+
 var mongoUrl;
 var config;
 
@@ -693,9 +695,33 @@ class Economy {
         }
     }
 
-    static async getShop() {
+    /**
+     * @param {string} [guildID] - Optional Guild ID
+     */
+    static async getShop(guildID) {
         if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
-        return config.shop;
+        if(!guildID) return config.shop;
+        const shop = await shopSchema.findOne({guildID});
+        if(!shop || !shop.shop) return false;
+        return shop.shop;
+    }
+
+    /**
+     * @param {string} [guildID] - Guild ID
+     * @param {object} [shop] - Shop Array
+     */
+    static async setShop(guildID, jsonShop) {
+        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if(!guildID || !jsonShop) throw new Error("Missing variables.");
+        let shop = await shopSchema.findOne({guildID});
+        if(!shop) {
+            shop = new shopSchema({
+                guildID
+            });
+        }
+        shop.shop = jsonShop;
+        await shop.save();
+        return true;
     }
 }
 async function timeoutMsg(type, data) {
