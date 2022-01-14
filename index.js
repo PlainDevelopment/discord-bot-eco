@@ -11,7 +11,7 @@ class Economy {
      * @param {string} [userID] - Get raw data for a user
      */
     static async getUser(userID) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         var storedSettings = await ecoSchema.findOne({
             userID
         });
@@ -35,9 +35,9 @@ class Economy {
      * @param {object} [conf] - Module configuration
      */
     static async setConfig(conf) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         config = conf;
-        
+
         mongoUrl = config.mongoURL;
         mongoose.connect(config.mongoURL, {
             useNewUrlParser: true,
@@ -52,7 +52,7 @@ class Economy {
      * @param {string} [iName] - Item Name
      */
     static async buy(userID, iName) {
-        if(!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         if (!userID || !iName) throw new Error("Missing variables.");
 
         const data = await Economy.getUser(userID);
@@ -84,14 +84,14 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async daily(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
         if (Date.now() < (data.dailyTimeout + 86400000)) return false; // If it has been less than 24 hours, return.
-        
-        
+
+
         if (Date.now() > (data.dailyTimeout + (86400000 * 2))) data.dailyStreak = 0
         else data.dailyStreak = data.dailyStreak + 1
 
@@ -117,7 +117,7 @@ class Economy {
      * @param {number} [amount] - Item Name
      */
     static async deposit(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -140,7 +140,7 @@ class Economy {
      * @param {number} [money] - Number to format
      */
     static async format(money) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         var formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD'
@@ -156,7 +156,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async get(userID, type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -170,7 +170,7 @@ class Economy {
      * @param {string} [userID] - Discord User ID
      */
     static async getBankLimit(userID) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -183,8 +183,8 @@ class Economy {
      * @param {string} [userID] - Discord User ID
      * @param {integer} [amount] - Amount
      */
-     static async setBankLimit(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+    static async setBankLimit(userID, amount) {
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -194,13 +194,13 @@ class Economy {
         await data.save();
         return data.bankLimit;
     }
-    
+
 
     /**
      * @param {string} [userID] - Discord User ID
      */
-     static async getItems(userID) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+    static async getItems(userID) {
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID) throw new Error("Missing variables.");
 
@@ -208,29 +208,29 @@ class Economy {
 
         return data.itemsOwned;
     }
-    
+
     /**
      * @param {string} [userID] - Discord User ID
      * @param {string} [item] - Item Name
      */
-     static async hasItem(userID, item) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+    static async hasItem(userID, item) {
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !item) throw new Error("Missing variables.");
 
         const data = await Economy.getItems(userID);
-        if(!data.itemsOwned.find(i => i.itemName.toLowerCase() === item.toLowerCase())) return false
+        if (!data.itemsOwned.find(i => i.itemName.toLowerCase() === item.toLowerCase())) return false
 
         return true;
     }
-    
+
 
     /**
      * @param {number} [from] - Min
      * @param {number} [to] - Max
      */
     static async getRandom(from, to) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!from || !to) throw new Error("Missing variables.");
 
@@ -242,7 +242,7 @@ class Economy {
      * @param {string} [timeout] - Daily, Weekly, Monthly
      */
     static async getTimeout(userID, timeout) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !timeout) throw new Error("Missing variables.");
 
@@ -259,7 +259,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async give(userID, amount, type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -284,7 +284,7 @@ class Economy {
      * @param {string} [iName] - Item Name to give
      */
     static async giveItem(userID, iName) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !iName) throw new Error("Missing variables.");
 
@@ -322,36 +322,36 @@ class Economy {
      * @param {string} [type] - Wallet, Bank, Both
      */
     static async leaderboard(type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!type || type === "both") {
             const d2 = await require('./db.js').find({});
-            if(!d2) return;
+            if (!d2) return;
             d2.sort((a, b) => {
                 return parseFloat(b.balance.bank + b.balance.wallet) - parseFloat(a.balance.bank + a.balance.wallet)
             });
-            
+
             if (!d2[0] || (d2[0].balance.bank + d2[0].balance.wallet) === 0) return false;
 
             return d2;
         }
         if (type === "wallet") {
             const d2 = await require('./db.js').find({});
-            if(!d2) return;
+            if (!d2) return;
             d2.sort((a, b) => {
                 return parseFloat(b.balance.wallet) - parseFloat(a.balance.wallet)
             });
-            
+
             if (!d2[0] || d2[0].balance.wallet === 0) return false;
             return d2;
         }
         if (type === "bank") {
             const d2 = await require('./db.js').find({});
-            if(!d2) return;
+            if (!d2) return;
             d2.sort((a, b) => {
                 return parseFloat(b.balance.bank) - parseFloat(a.balance.bank)
             });
-            
+
             if (!d2[0] || d2[0].balance.bank === 0) return false;
             return d2;
         }
@@ -362,7 +362,7 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async monthly(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -394,7 +394,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async reset(userID, type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -422,7 +422,7 @@ class Economy {
      * @param {number} [failChance] - Fail chance out of 100
      */
     static async rob(userID, robUserID, minEarn, maxEarn, failChance) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !robUserID || !maxEarn || !failChance) throw new Error("Missing variables.");
         if (!minEarn) minEarn = 0;
@@ -434,7 +434,7 @@ class Economy {
 
         let amount = Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
         if (amount < 0 || amount === 0) Math.floor(Math.random() * (maxEarn - minEarn + 1) + minEarn);
-        if(amount < 0 || amount === 0) return false;
+        if (amount < 0 || amount === 0) return false;
         if (data2.balance.wallet - amount < amount - (amount * .4) && (amount / 2) > data2.balance.wallet) return false; // Let them keep 4%
         data.balance.wallet = data.balance.wallet + amount;
         data2.balance.wallet = data2.balance.wallet - amount;
@@ -458,7 +458,7 @@ class Economy {
      * @param {string} [iName] - Item Name
      */
     static async sell(userID, iName) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !iName) throw new Error("Missing variables.");
 
@@ -491,7 +491,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async set(userID, amount, type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -515,7 +515,7 @@ class Economy {
      * @param {string} [type] - Wallet, Bank
      */
     static async take(userID, amount, type) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -545,7 +545,7 @@ class Economy {
      * @param {string} [iName] - Item Name to take
      */
     static async takeItem(userID, iName) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !iName) throw new Error("Missing variables.");
 
@@ -578,13 +578,13 @@ class Economy {
      * @param {number} [amount] - Amount of money to give
      */
     static async weekly(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
         if (Date.now() < (data.weeklyTimeout + (604800000))) return false; // If it has been less than 24 hours, return.
-        
+
         if (Date.now() > (data.weeklyTimeout + (604800000 * 2))) data.weeklyStreak = 0
         else data.weeklyStreak = data.weeklyStreak + 1
 
@@ -602,7 +602,7 @@ class Economy {
             wallet: data.balance.wallet,
             bank: data.balance.bank,
             streak: data.weeklyStreak
-        };//?
+        }; //?
     }
 
     /**
@@ -610,7 +610,7 @@ class Economy {
      * @param {number} [amount] - Item Name
      */
     static async withdraw(userID, amount) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
@@ -635,7 +635,7 @@ class Economy {
      * @param {number} [failChance] - Chance they get nothing
      */
     static async work(userID, minEarn, maxEarn, failChance) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !maxEarn) throw new Error("Missing variables.");
         if (!minEarn) minEarn = 0;
@@ -666,7 +666,7 @@ class Economy {
      */
 
     static async getStreak(userID, streak) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
 
         if (!userID || !streak) throw new Error("Missing variables.");
 
@@ -677,17 +677,17 @@ class Economy {
                 data.dailyStreak = 0
                 await data.save();
             }
-            return data.dailyStreak  
+            return data.dailyStreak
         }
         if (streak === "weekly") {
-            if(Date.now() > (data.weeklyTimeout + (604800000 * 2))) {
+            if (Date.now() > (data.weeklyTimeout + (604800000 * 2))) {
                 data.weeklyStreak = 0;
                 await data.save();
             }
             return data.weeklyStreak;
         }
         if (streak === "monthly") {
-            if(Date.now() > (data.monthlyTimeout + (2592000000 * 2))) {
+            if (Date.now() > (data.monthlyTimeout + (2592000000 * 2))) {
                 data.monthlyStreak = 0;
                 await data.save();
             }
@@ -699,10 +699,12 @@ class Economy {
      * @param {string} [guildID] - Optional Guild ID
      */
     static async getShop(guildID) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
-        if(!guildID) return config.shop;
-        const shop = await shopSchema.findOne({guildID});
-        if(!shop || !shop.shop) return false;
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!guildID) return config.shop;
+        const shop = await shopSchema.findOne({
+            guildID
+        });
+        if (!shop || !shop.shop) return false;
         return shop.shop;
     }
 
@@ -711,10 +713,12 @@ class Economy {
      * @param {object} [shop] - Shop Array
      */
     static async setShop(guildID, jsonShop) {
-        if(!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
-        if(!guildID || !jsonShop) throw new Error("Missing variables.");
-        let shop = await shopSchema.findOne({guildID});
-        if(!shop) {
+        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!guildID || !jsonShop) throw new Error("Missing variables.");
+        let shop = await shopSchema.findOne({
+            guildID
+        });
+        if (!shop) {
             shop = new shopSchema({
                 guildID
             });
@@ -725,9 +729,9 @@ class Economy {
     }
 }
 async function timeoutMsg(type, data) {
-    if(type === 'daily') return (new Date(data.dailyTimeout).setDate(new Date(data.dailyTimeout).getDate()+1)) - Date.now();
-    if(type === 'weekly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate()+7)) - Date.now();
-    if(type === 'monthly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate()+30)) - Date.now();
+    if (type === 'daily') return (new Date(data.dailyTimeout).setDate(new Date(data.dailyTimeout).getDate() + 1)) - Date.now();
+    if (type === 'weekly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate() + 7)) - Date.now();
+    if (type === 'monthly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate() + 30)) - Date.now();
     return false;
 }
 module.exports = Economy;
