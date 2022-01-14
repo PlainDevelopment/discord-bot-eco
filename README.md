@@ -16,8 +16,8 @@ To start using **discord-bot-eco**, you will first need to initialise the config
 ```js
 const economy = require('discord-bot-eco')
 client.on('ready', async() => {
-    economy.setURL("(MongoDB-URL)");
     economy.setConfig({
+        mongoURL: "",
         currency: "$",
         allowBankruptcy: false,
         limits: {
@@ -68,6 +68,7 @@ client.on('ready', async() => {
 |sell|`economy.sell(userID, itemName)`|
 |giveItem|`economy.giveItem(userID, itemName)`|
 |takeItem|`economy.takeItem(userID, itemName)`|
+|hasItem|`economy.hasItem(userID, itemName)`|
 |getItems|`economy.getItems(userID)`|
 
 ## Other Functions
@@ -83,6 +84,7 @@ client.on('ready', async() => {
 |format|`economy.format(amount)`|
 |getTimeout|`economy.getTimeout(userID, timeout)`|
 |getBankLimit|`economy.getBankLimit(userID)`|
+|setBankLimit|`economy.setBankLimit(userID, amount)`|
 |getRandom|`economy.getRandom(from, to)`|
 |getStreak|`economy.getStreak(userID, type)`|
 
@@ -176,6 +178,13 @@ await economy.getBankLimit(userID);
 ```
 - **false:** Bank limit is not enabled
 - The limit will be returned upon success.
+
+### SetBankLimit
+```js
+await economy.setBankLimit(userID, amount);
+```
+- **false:** Bank limit is not enabled
+- The bank limit will be returned upon success.
 
 ### GetTimeout
 ```js
