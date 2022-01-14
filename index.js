@@ -35,7 +35,7 @@ class Economy {
      * @param {object} [conf] - Module configuration
      */
     static async setConfig(conf) {
-        if (!config) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
+        if (!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         config = conf;
 
         mongoUrl = config.mongoURL;
