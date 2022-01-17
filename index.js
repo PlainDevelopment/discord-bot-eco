@@ -219,7 +219,7 @@ class Economy {
         if (!userID || !item) throw new Error("Missing variables.");
 
         const data = await Economy.getItems(userID);
-        if (!data.itemsOwned.find(i => i.itemName.toLowerCase() === item.toLowerCase())) return false
+        if (!data.find(i => i.itemName.toLowerCase() === item.toLowerCase())) return false
 
         return true;
     }
@@ -555,7 +555,7 @@ class Economy {
         let item = shop.find(o => o.itemName === iName);
 
         if (!item) return false;
-        objIndex = data.itemsOwned.findIndex((obj => obj.item.itemName == item.name));
+        let objIndex = data.itemsOwned.findIndex((obj => obj.item.itemName == item.name));
         if (!objIndex) return ("not_owned");
 
         if (data.itemsOwned[objIndex].amount === 1) myArray = myArray.filter(obj => {
