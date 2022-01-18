@@ -556,7 +556,7 @@ class Economy {
 
         if (!item) return false;
         let objIndex = data.itemsOwned.findIndex((obj => obj.item.itemName == item.name));
-        if (!objIndex) return ("not_owned");
+        if (objIndex === -1) return ("not_owned");
 
         if (data.itemsOwned[objIndex].amount === 1) myArray = myArray.filter(obj => {
             return obj.item.name !== data.itemsOwned[objIndex].item.name;
