@@ -193,3 +193,8 @@ await economy.getStreak(userID, type);
 - Type can be: **daily**, **weekly** or **monthly**.
 - Returns the streak for the type.
 
+
+Copyright Plain 
+Fuck plain.
+2022
+All right reserved.
