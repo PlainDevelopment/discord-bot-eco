@@ -367,7 +367,7 @@ class Economy {
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.monthlyTimeout + 2592000000)) false; // If it has been less than 24 hours, return.
+        if (Date.now() < (data.monthlyTimeout + 2592000000)) return false; // If it has been less than 1 month, return.
 
         if (Date.now() > (data.monthlyTimeout + (2592000000 * 2))) data.monthlyStreak = 0
         else data.monthlyStreak = data.monthlyStreak + 1
