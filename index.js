@@ -731,7 +731,7 @@ class Economy {
 async function timeoutMsg(type, data) {
     if (type === 'daily') return (new Date(data.dailyTimeout).setDate(new Date(data.dailyTimeout).getDate() + 1)) - Date.now();
     if (type === 'weekly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate() + 7)) - Date.now();
-    if (type === 'monthly') return (new Date(data.weeklyTimeout).setDate(new Date(data.weeklyTimeout).getDate() + 30)) - Date.now();
+    if (type === 'monthly') return (new Date(data.monthlyTimeout).setDate(new Date(data.monthlyTimeout).getDate() + 30)) - Date.now();
     return false;
 }
 module.exports = Economy;
