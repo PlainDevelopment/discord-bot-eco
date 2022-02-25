@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ecoSchema = require('./db');
 const shopSchema = require('./shop');
 
-var mongoUrl;
 var config;
 
 class Economy {
@@ -38,7 +37,6 @@ class Economy {
         if (!conf) throw new Error("You have not setup the module, please join the discord for support. https://discord.gg/DRxfU8wtu8");
         config = conf;
 
-        mongoUrl = config.mongoURL;
         mongoose.connect(config.mongoURL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -219,7 +217,7 @@ class Economy {
         if (!userID || !item) throw new Error("Missing variables.");
 
         const data = await Economy.getItems(userID);
-        if (!data.find(i => i.itemName.toLowerCase() === item.toLowerCase())) return false
+        if (!data.find(i => i.item.itemName.toLowerCase() === item.toLowerCase())) return false
 
         return true;
     }
@@ -367,7 +365,7 @@ class Economy {
         if (!userID || !amount) throw new Error("Missing variables.");
         const data = await Economy.getUser(userID);
 
-        if (Date.now() < (data.monthlyTimeout + 2592000000)) false; // If it has been less than 24 hours, return.
+        if (Date.now() < (data.monthlyTimeout + 2592000000)) return false; // If it has been less than 24 hours, return.
 
         if (Date.now() > (data.monthlyTimeout + (2592000000 * 2))) data.monthlyStreak = 0
         else data.monthlyStreak = data.monthlyStreak + 1
@@ -555,11 +553,11 @@ class Economy {
         let item = shop.find(o => o.itemName === iName);
 
         if (!item) return false;
-        let objIndex = data.itemsOwned.findIndex((obj => obj.item.itemName == item.name));
+        let objIndex = data.itemsOwned.findIndex((obj => obj.item.itemName == item.itemName));
         if (objIndex === -1) return ("not_owned");
 
-        if (data.itemsOwned[objIndex].amount === 1) myArray = myArray.filter(obj => {
-            return obj.item.name !== data.itemsOwned[objIndex].item.name;
+        if (data.itemsOwned[objIndex].amount === 1) data.itemsOwned = data.itemsOwned.filter(obj => {
+            return obj.item.itemName !== data.itemsOwned[objIndex].item.itemName;
         });
         else data.itemsOwned[objIndex].amount--;
 

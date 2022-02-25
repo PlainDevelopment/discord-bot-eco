@@ -1,6 +1,6 @@
 {
     "name": "discord-bot-eco",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Very customizable economy framework for your Discord Bot",
     "main": "index.js",
     "scripts": {
